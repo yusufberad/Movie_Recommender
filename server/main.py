@@ -2,7 +2,7 @@ from typing import Union
 from fastapi import FastAPI
 import joblib
 import pandas as pd
-from get_poster import fetch_poster
+from get_poster import fetch_poster, fetch_details
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
@@ -38,9 +38,10 @@ def read_item(name: str, q: str = None) -> dict :
     titles = []
     idxs = []
     for (x, y) in sim_scores:
-        titles.append(df_movies.iloc[x]["title"])
+        poster = fetch_poster(df_movies.iloc[x]['title'])
+        titles.append([df_movies.iloc[x]["title"],poster])
         idxs.append(x)
-    return {"item_id": item_id, "title": df_movies.iloc[item_id]['title'], "poster": fetch_poster(df_movies.iloc[item_id]['title']), "similar_items": titles}  
+    return {"item_id": item_id, "title": df_movies.iloc[item_id]['title'], "poster": fetch_poster(df_movies.iloc[item_id]['title']), "details":fetch_details(df_movies.iloc[item_id]["title"]), "similar_items": titles}  
 
 @app.get("/movie_list")
 def read_movie_list() -> dict:

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Movie_Poster from "../components/Movie_Poster";
 
 function Movie() {
     let { id } = useParams();
@@ -8,6 +9,7 @@ function Movie() {
     let [error, setError] = useState(null);
     let [list , setList] = useState([]);
     let [poster, setPoster] = useState('');
+    let [details, setDetails] = useState([]);
     
     useEffect(() => {
         const fetchData = async () => {
@@ -20,6 +22,7 @@ function Movie() {
                 setData(data);
                 setList(data.similar_items);
                 setPoster(data.poster);
+                setDetails(data.details);
                 console.log(data);}
             catch (error) {
                 setError(error.message);
@@ -32,14 +35,21 @@ function Movie() {
         fetchData();
     },[]);
   return (
-    <div>
-      <h1>{id}</h1>
-      <img src={poster} alt="" />     
-      <ul>
+    <div className="px-24 py-5 flex flex-col gap-24">
+      <div className="flex flex-row">
+        <img src={poster} alt="poster" />
+        <div className="flex flex-col">
+          <h1 className="text-2xl" >{data.title}</h1>
+          <p>{details}</p>
+        </div>
+      </div>  
+      <div className="flex justify-center items-center">
+      <ul className="grid grid-cols-5 gap-24" >
         {list.map((item, index) => (
-            <li key={index}>{item}</li>
+            <Movie_Poster key={index} movie={item} />
         ))}
       </ul>
+      </div>
     </div>
   );
 }
