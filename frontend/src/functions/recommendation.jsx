@@ -1,4 +1,0 @@
-
-function Recommendation(id) {
-  
-}

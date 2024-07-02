@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './pages/home'
 import AutoComplete from './components/AutoComplete'
+import Loading_Screen from './components/Loading_Screen'
 
 function App() {
 
